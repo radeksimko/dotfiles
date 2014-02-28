@@ -5,16 +5,20 @@ My Unix dotfiles.
 ### OS X - Before installation
 You need to have installed [XCode](https://developer.apple.com/downloads/index.action?=xcode) or, at the very minimum, the [XCode Command Line Tools](https://developer.apple.com/downloads/index.action?=command%20line%20tools), which are available as a _much smaller_ download thank XCode.
 
+## How to use it?
+Fork the boostrap project, add your own dotfiles
+into [appropriate dirs](#all-steps-in-detail) and continue onto next paragraph.
+
 ## How to install it?
 With Git (**without** superuser privileges):
 ```sh
-git clone git@github.com:radeksimko/dotfiles.git ~/.dotfiles
-~/.dotfiles/bin/dotfiles -i 'git@github.com:radeksimko/dotfiles.git'
+git clone '<fork-repo-url>' ~/.dotfiles
+~/.dotfiles/bin/dotfiles -i '<fork-repo-url>'
 ```
 
 without Git (**with** superuser privileges):
 ```sh
-bash -c "$(curl -fsSL https://raw.github.com/radeksimko/dotfiles/master/bin/dotfiles)"
+bash -c "$(curl -fsSL https://raw.github.com/<fork-user-name>/<fork-repo-name>/master/bin/dotfiles)"
 ```
 
 ### TL;DR What does the "dotfiles" do?
