@@ -13,7 +13,7 @@ into [appropriate dirs](#all-steps-in-detail) and continue onto next paragraph.
 With Git (**without** superuser privileges):
 ```sh
 git clone '<fork-repo-url>' ~/.dotfiles
-~/.dotfiles/bin/dotfiles -i '<fork-repo-url>'
+~/.dotfiles/bin/dotfiles
 ```
 
 without Git (**with** superuser privileges):
