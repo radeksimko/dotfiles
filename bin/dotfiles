@@ -123,6 +123,11 @@ if [[ "$1" == "-i" ]]; then
       sudo yum -y -q install git
     elif [[ "$OSTYPE" =~ ^darwin ]]; then
       if [[ ! "$(type -P gcc)" ]]; then
+        OSX_VERSION=`sw_vers -productVersion | cut -d. -f 2`
+        if [[ $OSX_VERSION -ge 9 ]]; then
+          # Offer CLI Tools installation for 10.9+
+          xcode-select --install
+        fi
         e_error "XCode or the CLI Tools for XCode must be installed first."
         exit 1
       fi
