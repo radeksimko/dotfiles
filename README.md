@@ -14,7 +14,7 @@ git clone git@github.com:radeksimko/dotfiles.git ~/.dotfiles
 
 without Git (**with** superuser privileges):
 ```sh
-sh -c `curl -fsSL https://raw.github.com/radeksimko/dotfiles/master/bin/dotfiles`
+bash -c "$(curl -fsSL https://raw.github.com/radeksimko/dotfiles/master/bin/dotfiles)"
 ```
 
 ### TL;DR What does the "dotfiles" do?
