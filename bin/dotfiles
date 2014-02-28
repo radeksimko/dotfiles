@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
+# Licensed under the MIT license
+# See the LICENCE file in root of the repo
 
-echo 'Dotfiles - "Cowboy" Ben Alman - http://benalman.com/'
+echo 'Self-sustainable dotfiles script'
 
-if [[ "$1" == "-h" || "$1" == "--help" ]]; then cat <<HELP
+if [[ "$1" == "-h" || "$1" == "--help" || ( $# -ne 2 && $# -ne 0 ) ]]; then cat <<HELP
 
-Usage: $(basename "$0")
+Usage: $(basename "$0") [-i <git-repo-url>]
 
-See the README for documentation.
-https://github.com/cowboy/dotfiles
+    -i  Install git and clone/update all other files from provided URL
 
-Copyright (c) 2012 "Cowboy" Ben Alman
-Licensed under the MIT license.
-http://benalman.com/about/license/
 HELP
 exit; fi
 
@@ -44,18 +42,6 @@ function to_install() {
     echo "$v ($(eval echo "\${#$v[*]}")) $(eval echo "\${$v[*]}")"
   done
   echo "${remain[@]}"
-}
-
-# Offer the user a chance to skip something.
-function skip() {
-  REPLY=noskip
-  read -t 5 -n 1 -s -p "To skip, press X within 5 seconds. "
-  if [[ "$REPLY" =~ ^[Xx]$ ]]; then
-    echo "Skipping!"
-  else
-    echo "Continuing..."
-    return 1
-  fi
 }
 
 # Initialize.
@@ -123,65 +109,70 @@ function do_stuff() {
   done
 }
 
+
 # Enough with the functions, let's do stuff.
 
-# Ensure that we can actually, like, compile anything.
-if [[ ! "$(type -P gcc)" && "$OSTYPE" =~ ^darwin ]]; then
-  e_error "XCode or the Command Line Tools for XCode must be installed first."
+if [[ "$1" == "-i" ]]; then
+  # If Git is not installed, install it
+  if [[ ! "$(type -P git)" ]]; then
+    e_header "Installing Git"
+    LINUX_ISSUE="$(cat /etc/issue 2> /dev/null)"
+    if [[ $LINUX_ISSUE =~ Ubuntu || $LINUX_ISSUE =~ Debian ]]; then
+      sudo apt-get -qq install git
+    elif [[ $LINUX_ISSUE =~ CentOS ]]; then
+      sudo yum -y -q install git
+    elif [[ "$OSTYPE" =~ ^darwin ]]; then
+      if [[ ! "$(type -P gcc)" ]]; then
+        e_error "XCode or the CLI Tools for XCode must be installed first."
+        exit 1
+      fi
+      e_error "You have XCode CLI Tools, but not git? How is that possible?"
+      exit 1
+    fi
+  fi
+
+  # If Git isn't installed by now, something exploded. We gots to quit!
+  if [[ ! "$(type -P git)" ]]; then
+    e_error "Git should be installed. It isn't. Aborting."
+    exit 1
+  fi
+
+  # Initialize.
+  if [[ ! -d ~/.dotfiles ]]; then
+    new_dotfiles_install=1
+    e_header "Downloading dotfiles"
+    git clone --recursive "$2" ~/.dotfiles
+  else
+    e_header "Updating dotfiles"
+    git pull
+    git submodule update --init --recursive --quiet
+  fi
+fi
+
+if [ ! -d ~/.dotfiles ]; then
+  e_error "Either use -i option or clone the repo into ~/.dotfiles"
   exit 1
-fi
-
-# If Git is not installed, install it (Ubuntu only, since Git comes standard
-# with recent XCode or CLT)
-if [[ ! "$(type -P git)" && "$(cat /etc/issue 2> /dev/null)" =~ Ubuntu ]]; then
-  e_header "Installing Git"
-  sudo apt-get -qq install git-core
-fi
-
-# If Git isn't installed by now, something exploded. We gots to quit!
-if [[ ! "$(type -P git)" ]]; then
-  e_error "Git should be installed. It isn't. Aborting."
-  exit 1
-fi
-
-# Update existing sudo time stamp if set, otherwise do nothing.
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
-
-# Initialize.
-if [[ ! -d ~/.dotfiles ]]; then
-  new_dotfiles_install=1
-  # ~/.dotfiles doesn't exist? Clone it!
-  e_header "Downloading dotfiles"
-  git clone --recursive git://github.com/cowboy/dotfiles.git ~/.dotfiles
-  cd ~/.dotfiles
-else
-  # Make sure we have the latest files.
-  e_header "Updating dotfiles"
-  cd ~/.dotfiles
-  git pull
-  git submodule update --init --recursive --quiet
 fi
 
 # Utilities, helpers.
-source ~/.dotfiles/source/10_misc.sh
-
-# Add binaries into the path
-PATH=~/.dotfiles/bin:$PATH
-export PATH
+if [ "$(ls -A ~/.dotfiles/source)" ]; then
+  for file in ~/.dotfiles/source/*; do
+    source "$file"
+  done
+fi
 
 # Tweak file globbing.
 shopt -s dotglob
 shopt -s nullglob
-
-# Create caches directory, if it doesn't already exist.
-mkdir -p "$HOME/.dotfiles/caches"
 
 # If backups are needed, this is where they'll go.
 backup_dir="$HOME/.dotfiles/backups/$(date "+%Y_%m_%d-%H_%M_%S")/"
 backup=
 
 # Execute code for each file in these subdirectories.
-do_stuff "init"
+if [[ "$1" == "-i" ]]; then
+  do_stuff "init"
+fi
 do_stuff "copy"
 do_stuff "link"
 
@@ -190,10 +181,10 @@ if [[ "$backup" ]]; then
   echo -e "\nBackups were moved to ~/${backup_dir#$HOME/}"
 fi
 
-# Lest I forget to do a few additional things...
-if [[ "$new_dotfiles_install" && -e "conf/firsttime_reminder.sh" ]]; then
+# Show notice after installation
+if [[ "$new_dotfiles_install" && -e "conf/first_time_reminder.sh" ]]; then
   e_header "First-Time Reminders"
-  source "conf/firsttime_reminder.sh"
+  source "conf/first_time_reminder.sh"
 fi
 
 # All done!
