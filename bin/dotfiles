@@ -122,12 +122,41 @@ function do_stuff() {
   done
 }
 
+function ensure_xcode_cli_tools() {
+  # https://github.com/timsutton/osx-vm-templates/blob/master/scripts/xcode-cli-tools.sh
+  OSX_VERS=$(sw_vers -productVersion | awk -F "." '{print $2}')
+
+  if [ "$OSX_VERS" -ge 9 ]; then
+      touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+      PROD=$(softwareupdate -l | grep -B 1 "Developer" | head -n 1 | awk -F"*" '{print $2}')
+      softwareupdate -i $PROD -v && e_success "XCode CLI Tools for OS X 10.9 installed"
+      return
+  fi
+
+  [ "$OSX_VERS" -eq 7 ] && DMGURL=http://devimages.apple.com/downloads/xcode/command_line_tools_for_xcode_os_x_lion_april_2013.dmg
+  [ "$OSX_VERS" -eq 8 ] && DMGURL=http://devimages.apple.com/downloads/xcode/command_line_tools_for_osx_mountain_lion_april_2014.dmg
+
+  TOOLS=clitools.dmg
+  curl "$DMGURL" -o "$TOOLS"
+  TMPMOUNT=`/usr/bin/mktemp -d /tmp/clitools.XXXX`
+  hdiutil attach "$TOOLS" -mountpoint "$TMPMOUNT"
+  installer -pkg "$(find $TMPMOUNT -name '*.mpkg')" -target /
+  hdiutil detach "$TMPMOUNT"
+  rm -rf "$TMPMOUNT"
+  rm "$TOOLS"
+
+  e_success "XCode CLI Tools for OS X 10.$OSX_VERS installed"
+}
+
 
 # Enough with the functions, let's do stuff.
 
 if [[ "$1" == "-r" ]]; then
   # If Git is not installed, install it
-  if [[ ! "$(type -P git)" ]]; then
+  git >/dev/null 2>/tmp/git-stderr.log
+  if [[ $(wc -c /tmp/git-stderr.log | awk '{print $1}') -eq 0 ]]; then
+    e_info "Git is already installed"
+  else
     e_header "Installing Git"
     LINUX_ISSUE="$(cat /etc/issue 2> /dev/null)"
     if [[ $LINUX_ISSUE =~ Ubuntu || $LINUX_ISSUE =~ Debian ]]; then
@@ -135,22 +164,13 @@ if [[ "$1" == "-r" ]]; then
     elif [[ $LINUX_ISSUE =~ CentOS ]]; then
       sudo yum -y -q install git
     elif [[ "$OSTYPE" =~ ^darwin ]]; then
-      if [[ ! "$(type -P gcc)" ]]; then
-        OSX_VERSION=`sw_vers -productVersion | cut -d. -f 2`
-        if [[ $OSX_VERSION -ge 9 ]]; then
-          # Offer CLI Tools installation for 10.9+
-          xcode-select --install
-        fi
-        e_error "XCode or the CLI Tools for XCode must be installed first."
-        exit 1
-      fi
-      e_error "You have XCode CLI Tools, but not git? How is that possible?"
-      exit 1
+      ensure_xcode_cli_tools
     fi
   fi
 
   # If Git isn't installed by now, something exploded. We gots to quit!
-  if [[ ! "$(type -P git)" ]]; then
+  git >/dev/null 2>/tmp/git-stderr.log
+  if [[ $(wc -c /tmp/git-stderr.log | awk '{print $1}') -ne 0 ]]; then
     e_error "Git should be installed. It isn't. Aborting."
     exit 1
   fi
