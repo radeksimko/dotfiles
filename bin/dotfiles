@@ -45,8 +45,14 @@ function to_install() {
 }
 
 # Initialize.
+function init_header() { e_header "Installing things"; }
 function init_do() {
-  source "$2"
+  if [[ -x "$2" ]]; then
+    e_arrow "Sourcing $2..."
+    source "$2"
+  else
+    e_arrow "$2 is not executable, skipping..."
+  fi
 }
 
 # Copy files.
