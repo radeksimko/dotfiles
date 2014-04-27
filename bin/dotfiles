@@ -71,8 +71,8 @@ function copy_test() {
 }
 function copy_do() {
   if [[ "$1" != '.gitignore' ]]; then
-    e_success "Copying ~/$1."
-    cp "$2" ~/
+    e_arrow "Copying ~/$1"
+    cp "$2" ~/ && e_success "~/$1 copied in place"
   fi
 }
 
@@ -82,8 +82,8 @@ function link_test() {
   [[ "$1" -ef "$2" ]] && echo "same file"
 }
 function link_do() {
-  e_success "Linking ~/$1."
-  ln -sf ${2#$HOME/} ~/
+  e_arrow "Linking ~/$1"
+  ln -sf ${2#$HOME/} ~/ && e_success "~/$1 linked in place"
 }
 
 # Copy, link, init, etc.
@@ -103,7 +103,7 @@ function do_stuff() {
       # If _test function returns a string, skip file and print that message.
       skip="$("$1_test" "$file" "$dest")"
       if [[ "$skip" ]]; then
-        e_error "Skipping ~/$base, $skip."
+        e_arrow "Skipping ~/$base, $skip"
         continue
       fi
       # Destination file already exists in ~/. Back it up!
