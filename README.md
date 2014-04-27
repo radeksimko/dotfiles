@@ -54,6 +54,14 @@ Any file in the `link` subdirectory gets symbolically linked with `ln -s` into `
 #### The "source" step
 To keep things easy, the `~/.bashrc` and `~/.bash_profile` files are extremely simple, and should never need to be modified. Instead, add your aliases, functions, settings, etc into one of the files in the `source` subdirectory, or add a new file. They're all automatically sourced when a new shell is opened.
 
+### Helpers
+There are some helper functions you may find useful while installing stuff:
+
+```sh
+recipes=(ack hub pv)
+INSTALL_BREW_PACKAGES "${recipes[*]}"
+```
+
 ## Inspiration
 - https://github.com/cowboy/dotfiles (the `dotfiles` + dirs structure/philosophy)
 
