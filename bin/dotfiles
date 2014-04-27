@@ -58,15 +58,19 @@ function init_do() {
 # Copy files.
 function copy_header() { e_header "Copying files into home directory"; }
 function copy_test() {
-  if [[ -e "$2" && ! "$(cmp "$1" "$2" 2> /dev/null)" ]]; then
+  if [[ "$2" == '.gitignore' ]]; then
+    echo "Ignoring gitignore while copying"
+  elif [[ -e "$2" && ! "$(cmp "$1" "$2" 2> /dev/null)" ]]; then
     echo "same file"
   elif [[ "$1" -ot "$2" ]]; then
     echo "destination file newer"
   fi
 }
 function copy_do() {
-  e_success "Copying ~/$1."
-  cp "$2" ~/
+  if [[ "$1" != '.gitignore' ]]; then
+    e_success "Copying ~/$1."
+    cp "$2" ~/
+  fi
 }
 
 # Link files.
@@ -166,7 +170,7 @@ if [ ! -d ~/.dotfiles ]; then
 fi
 
 # Utilities, helpers.
-if [ "$(ls -A ~/.dotfiles/source)" ]; then
+if [ "$(ls -A ~/.dotfiles/source | grep -v '.gitignore')" ]; then
   for file in ~/.dotfiles/source/*; do
     source "$file"
   done
