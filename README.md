@@ -10,16 +10,19 @@ Fork the boostrap project, add your own dotfiles
 into [appropriate dirs](#all-steps-in-detail) and continue onto next paragraph.
 
 ## How to install it?
-With Git (**without** superuser privileges):
+With Git:
 ```sh
 git clone '<fork-repo-url>' ~/.dotfiles
-~/.dotfiles/bin/dotfiles
+~/.dotfiles/bin/dotfiles [-i]
 ```
 
-without Git (**with** superuser privileges):
+without Git (it will try to install Git which **implies superuser privileges**):
 ```sh
-bash -c "$(curl -fsSL https://raw.github.com/<fork-user-name>/<fork-repo-name>/master/bin/dotfiles)"
+bash -c "$(curl -fsSL https://raw.github.com/<fork-user-name>/<fork-repo-name>/master/bin/dotfiles)" dotfiles -r https://github.com/<fork-user-name>/<fork-repo-name> [-i]
 ```
+
+If (optional) `-i` is passed, all files in `./init` will run.
+It is optional because you might not have privileges to install anything.
 
 ### TL;DR What does the "dotfiles" do?
 

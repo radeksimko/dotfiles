@@ -4,11 +4,12 @@
 
 echo 'Self-sustainable dotfiles script'
 
-if [[ "$1" == "-h" || "$1" == "--help" || ( $# -ne 2 && $# -ne 0 ) ]]; then cat <<HELP
+if [[ "$1" == "-h" || "$1" == "--help" || ( $# -gt 3 ) ]]; then cat <<HELP
 
-Usage: $(basename "$0") [-i <git-repo-url>]
+Usage: $(basename "$0") [-r <git-repo-url>] [-i]
 
-    -i  Install git and clone/update all other files from provided URL
+    -r  Install git and clone/update all other files from provided URL
+    -i  Run all scripts in ./init (install all the things)
 
 HELP
 exit; fi
@@ -124,7 +125,7 @@ function do_stuff() {
 
 # Enough with the functions, let's do stuff.
 
-if [[ "$1" == "-i" ]]; then
+if [[ "$1" == "-r" ]]; then
   # If Git is not installed, install it
   if [[ ! "$(type -P git)" ]]; then
     e_header "Installing Git"
@@ -167,7 +168,7 @@ if [[ "$1" == "-i" ]]; then
 fi
 
 if [ ! -d ~/.dotfiles ]; then
-  e_error "Either use -i option or clone the repo into ~/.dotfiles"
+  e_error "Either use -r option or clone the repo into ~/.dotfiles"
   exit 1
 fi
 
