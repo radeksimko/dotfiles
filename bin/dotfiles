@@ -188,7 +188,7 @@ backup_dir="$HOME/.dotfiles/backups/$(date "+%Y_%m_%d-%H_%M_%S")/"
 backup=
 
 # Execute code for each file in these subdirectories.
-if [[ "$1" == "-i" ]]; then
+if [[ "$1" == "-i" || "$2" == "-i" || "$3" == "-i" ]]; then
   do_stuff "init"
 fi
 do_stuff "copy"
