@@ -178,10 +178,22 @@ if [[ "$1" == "-r" ]]; then
   # Initialize.
   if [[ ! -d ~/.dotfiles ]]; then
     new_dotfiles_install=1
-    e_header "Downloading dotfiles"
-    git clone --recursive "$2" ~/.dotfiles
+    OLD_IFS=$IFS
+    IFS='@'
+    full_url=($2);
+    repo_url="${full_url[0]}"; branch_name="${full_url[1]}"
+    IFS=$OLD_IFS
+
+    e_header "Downloading dotfiles from $2"
+    git clone --recursive $repo_url ~/.dotfiles
+
+    if [[ $branch_name != '' ]]; then
+      e_info "Checking out branch $branch_name"
+      cd ~/.dotfiles && git checkout $branch_name
+    fi
   else
     e_header "Updating dotfiles"
+    cd ~/.dotfiles
     git pull
     git submodule update --init --recursive --quiet
   fi
