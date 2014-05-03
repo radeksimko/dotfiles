@@ -4,7 +4,24 @@
 
 echo 'Self-sustainable dotfiles script'
 
-if [[ "$1" == "-h" || "$1" == "--help" || ( $# -gt 3 ) ]]; then cat <<HELP
+while getopts "hr:i" opt; do
+  case $opt in
+    h)
+      h=$opt
+      ;;
+    r)
+      r=$OPTARG
+      ;;
+    i)
+      i=$opt
+      ;;
+    \?)
+      echo "Invalid option: -$opt" >&2
+      ;;
+  esac
+done
+
+if [[ $h == 'h' || "$1" == "--help" || ( $# -gt 3 ) ]]; then cat <<HELP
 
 Usage: $(basename "$0") [-r <git-repo-url>] [-i]
 
@@ -151,7 +168,7 @@ function ensure_xcode_cli_tools() {
 
 # Enough with the functions, let's do stuff.
 
-if [[ "$1" == "-r" ]]; then
+if [[ $r != '' ]]; then
   # If Git is not installed, install it
   git >/dev/null 2>/tmp/git-stderr.log
   if [[ $(wc -c /tmp/git-stderr.log | awk '{print $1}') -eq 0 ]]; then
@@ -180,11 +197,11 @@ if [[ "$1" == "-r" ]]; then
     new_dotfiles_install=1
     OLD_IFS=$IFS
     IFS='@'
-    full_url=($2);
+    full_url=($r);
     repo_url="${full_url[0]}"; branch_name="${full_url[1]}"
     IFS=$OLD_IFS
 
-    e_header "Downloading dotfiles from $2"
+    e_header "Downloading dotfiles from $r"
     git clone --recursive $repo_url ~/.dotfiles
 
     if [[ $branch_name != '' ]]; then
@@ -220,7 +237,7 @@ backup_dir="$HOME/.dotfiles/backups/$(date "+%Y_%m_%d-%H_%M_%S")/"
 backup=
 
 # Execute code for each file in these subdirectories.
-if [[ "$1" == "-i" || "$2" == "-i" || "$3" == "-i" ]]; then
+if [[ $i == 'i' ]]; then
   do_stuff "init"
 fi
 do_stuff "copy"
