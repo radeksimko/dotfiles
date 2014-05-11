@@ -34,6 +34,9 @@ INSTALL_DMG --copy_app 'http://www.sparklabs.com/downloads/Viscosity.dmg' 'Visco
 # CleanMyMac
 INSTALL_DMG --copy_app 'http://dl.devmate.com/com.macpaw.CleanMyMac2/CleanMyMac2.dmg' 'CleanMyMac 2.app'
 
+# AppEngine Launcher
+INSTALL_DMG --copy_app 'https://storage.googleapis.com/appengine-sdks/featured/GoogleAppEngineLauncher-1.9.4.dmg' 'GoogleAppEngineLauncher.app'
+
 # Virtualbox
 INSTALL_DMG --install_pkg 'http://download.virtualbox.org/virtualbox/4.3.8/VirtualBox-4.3.8-92456-OSX.dmg' 'VirtualBox.app'
 
