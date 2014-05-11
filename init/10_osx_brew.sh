@@ -31,7 +31,6 @@ recipes=(
   libxslt
   libyaml
   links
-  macvim
   man2html
   maven
   maven-shell
