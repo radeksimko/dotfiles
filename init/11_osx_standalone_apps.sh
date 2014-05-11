@@ -31,6 +31,9 @@ INSTALL_DMG --copy_app 'http://download.skype.com/macosx/Skype_6.15.0.330.dmg' '
 # Viscosity
 INSTALL_DMG --copy_app 'http://www.sparklabs.com/downloads/Viscosity.dmg' 'Viscosity.app'
 
+# CleanMyMac
+INSTALL_DMG --copy_app 'http://dl.devmate.com/com.macpaw.CleanMyMac2/CleanMyMac2.dmg' 'CleanMyMac 2.app'
+
 # Virtualbox
 INSTALL_DMG --install_pkg 'http://download.virtualbox.org/virtualbox/4.3.8/VirtualBox-4.3.8-92456-OSX.dmg' 'VirtualBox.app'
 
