@@ -8,6 +8,7 @@ apps=`cat <<LIST
   sourcetree-git-hg/id411678673 SourceTree.app
   window-magnet/id441258766 "Window Magnet.app"
   caffeine/id411246225 Caffeine.app
+  xcode/id497799835 Xcode.app
 LIST`
 
 INSTALL_APPSTORE_APPS "$apps"
