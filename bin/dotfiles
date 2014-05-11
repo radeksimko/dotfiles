@@ -170,7 +170,7 @@ function ensure_xcode_cli_tools() {
 
 # Enough with the functions, let's do stuff.
 
-if [[ $r != '' ]]; then
+if [[ $i != '' ]]; then
   # If Git is not installed, install it
   git >/dev/null 2>/tmp/git-stderr.log
   if [[ $(wc -c /tmp/git-stderr.log | awk '{print $1}') -eq 0 ]]; then
@@ -186,15 +186,17 @@ if [[ $r != '' ]]; then
       ensure_xcode_cli_tools
     fi
   fi
+fi
 
-  # If Git isn't installed by now, something exploded. We gots to quit!
-  git >/dev/null 2>/tmp/git-stderr.log
-  if [[ $(wc -c /tmp/git-stderr.log | awk '{print $1}') -ne 0 ]]; then
-    e_error "Git should be installed. It isn't. Aborting."
-    exit 1
-  fi
+# Check if Git is installed
+git >/dev/null 2>/tmp/git-stderr.log
+if [[ $(wc -c /tmp/git-stderr.log | awk '{print $1}') -ne 0 ]]; then
+  e_error "Git is missing. Use -i option or install it manually."
+  exit 1
+fi
 
-  # Initialize.
+# Initialize
+if [[ $r != '' ]]; then
   if [[ ! -d ~/.dotfiles ]]; then
     new_dotfiles_install=1
     OLD_IFS=$IFS
