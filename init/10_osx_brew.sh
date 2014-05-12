@@ -1,5 +1,6 @@
 recipes=(
   ack
+  ant
   bash
   casperjs
   cowsay
