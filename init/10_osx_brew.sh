@@ -13,6 +13,7 @@ recipes=(
   gmp
   gnu-sed
   gnutls
+  graphviz
   htop-osx
   hub
   hydra
