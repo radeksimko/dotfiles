@@ -4,6 +4,9 @@ export PATH=/usr/local/share/npm/bin:$PATH # NPM
 export PATH=/usr/local/mysql/bin:$PATH # MySQL
 export PATH=/usr/local/pear/bin:$PATH # Pear
 export PATH=/usr/local/Cellar/ruby/1.9.3-p194/bin:$PATH # Ruby
+export PATH=/usr/local/opt/gnu-sed/libexec/gnubin:$PATH # sed
+
+export MANPATH=/usr/local/opt/gnu-sed/libexec/gnuman:$MANPATH
 
 # Locales
 export LANGUAGE=en_US.UTF-8
