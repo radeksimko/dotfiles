@@ -58,8 +58,32 @@ To keep things easy, the `~/.bashrc` and `~/.bash_profile` files are extremely s
 There are some helper functions you may find useful while installing stuff:
 
 ```sh
-recipes=(ack hub pv)
+recipes=(
+  ack
+  hub
+)
 INSTALL_BREW_PACKAGES "${recipes[*]}"
+```
+```sh
+taps=(
+  caskroom/cask
+  caskroom/versions
+)
+TAP_BREW_REPOS "${taps[*]}"
+```
+```sh
+apps=`cat <<LIST
+  twitter/id409789998 Twitter.app
+  xcode/id497799835 Xcode.app
+LIST`
+INSTALL_APPSTORE_APPS "$apps"
+```
+```sh
+packages=(
+  vmware-fusion
+  the-unarchiver
+)
+INSTALL_CASK_PACKAGES "${packages[*]}"
 ```
 
 ## Inspiration
