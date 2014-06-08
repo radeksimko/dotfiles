@@ -1,0 +1,11 @@
+{
+  "name": "default",
+  "version": "1.0.0",
+  "dependencies":
+  {
+    "bower": "*",
+    "grunt-cli": "*",
+    "grunt-growl": "*",
+    "supervisor": "*"
+  }
+}
