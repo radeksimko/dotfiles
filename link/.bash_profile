@@ -50,7 +50,10 @@ genpasswd() {
 	head -30 /dev/random | uuencode -m - | tail -3 | head -1 | sed 's/[^A-z0-9_]/Y/g' | head -c ${l}
 	echo ""
 }
-[ -f ~/.git-bash-completion.sh ] && . ~/.git-bash-completion.sh
+
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    source $(brew --prefix)/etc/bash_completion
+fi
 
 # GIT bash current branch
 # by HABR (modified by Dundee)

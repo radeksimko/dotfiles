@@ -10,13 +10,18 @@ recipes=(
   android-platform-tools # = adb
   ant
   bash
+  bash-completion
+  bundler-completion
   casperjs
   cowsay
+  django-completion
   docker
   freetype
   gdbm
+  gem-completion
   geoip
   gettext
+  git # OSX builtin is too old and w/out completition
   glew
   glib
   gmp
@@ -58,11 +63,13 @@ recipes=(
   p11-kit
   pcre
   phantomjs
+  pip-completion
   pixman
   pkg-config
   python # = pip
   pv
   qemu # 16.5 min
+  rake-completion
   readline
   redis
   rtmpdump
@@ -75,6 +82,7 @@ recipes=(
   sqlite
   ssh-copy-id
   tree
+  vagrant-completion
   watch
   wget
   xz
