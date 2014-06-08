@@ -43,7 +43,23 @@ function INSTALL_BREW_PACKAGES() {
     e_subheader "Installing Homebrew recipes: $list"
     brew install $list
   fi
-
 }
 
+function TAP_BREW_REPOS() {
+  local taps=$1
 
+  if [[ ! "$taps" ]]; then
+    e_error "Provide the list of taps (repositories) as an argument"
+    continue
+  fi
+
+  ENSURE_BREW_IS_INSTALLED
+
+  local list="$(to_install "${taps[*]}" "$(brew tap)")"
+  if [[ "$list" ]]; then
+    e_subheader "Installing Homebrew taps: $list"
+    for tap in $list; do
+      brew tap $tap
+    done
+  fi
+}
