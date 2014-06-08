@@ -1,0 +1,14 @@
+source 'https://rubygems.org'
+
+# Some of it should be in project-based Gemfiles,
+# but sometimes it's not
+
+gem 'facter'
+gem 'hiera'
+gem 'puppet'
+gem 'puppet-lint'
+gem 'rake'
+gem 'rspec'
+gem 'rspec-puppet'
+gem 'serverspec'
+gem 'spec'
