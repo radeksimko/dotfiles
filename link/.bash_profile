@@ -3,7 +3,7 @@ export PATH=/opt/local/bin:/usr/local/bin:/opt/local/sbin:/usr/local/sbin:$PATH
 export PATH=/usr/local/share/npm/bin:$PATH # NPM
 export PATH=/usr/local/mysql/bin:$PATH # MySQL
 export PATH=/usr/local/pear/bin:$PATH # Pear
-export PATH=/usr/local/Cellar/ruby/1.9.3-p194/bin:$PATH # Ruby
+export PATH=/usr/local/opt/ruby/bin:$PATH # Ruby
 export PATH=/usr/local/opt/gnu-sed/libexec/gnubin:$PATH # sed
 
 export MANPATH=/usr/local/opt/gnu-sed/libexec/gnuman:$MANPATH
