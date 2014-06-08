@@ -11,4 +11,4 @@ sudo npm install -g
 e_arrow "Installing Ruby gems"
 sudo gem install bundler
 cd ~/.dotfiles/conf/gem/
-/usr/local/opt/ruby/bin/bundle install --system
+/usr/bin/bundle install --system
