@@ -1,9 +1,18 @@
+taps=(
+  homebrew/binary
+  homebrew/completions
+)
+
+TAP_BREW_REPOS "${taps[*]}"
+
 recipes=(
   ack
+  android-platform-tools # = adb
   ant
   bash
   casperjs
   cowsay
+  docker
   freetype
   gdbm
   geoip
@@ -14,6 +23,7 @@ recipes=(
   gnu-sed
   gnutls
   graphviz
+  packer
   htop-osx
   hub
   hydra
@@ -50,17 +60,18 @@ recipes=(
   phantomjs
   pixman
   pkg-config
+  python # = pip
   pv
-  qemu
+  qemu # 16.5 min
   readline
   redis
   rtmpdump
-  ruby
+  ruby # I don't want to bother /w RVM nor OSX builtin Ruby
   scons
   sdl
   sdl_image
   sl
-  spidermonkey
+  spidermonkey # 5.1min
   sqlite
   ssh-copy-id
   tree
