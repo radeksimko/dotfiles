@@ -19,6 +19,7 @@ export PS1="\\u@\\h:\\W $ "
 export HISTFILESIZE=5000
 
 export JAVA_HOME=$(/usr/libexec/java_home)
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
 # AWS credentials
 [ -f ~/.aws ] && . ~/.aws
