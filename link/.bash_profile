@@ -75,8 +75,6 @@ function GITBRANCH() {
 
 PROMPT_COMMAND="GITBRANCH;"
 
-# TODO detection by geoip - location name / provider name / hostname
-
 # TODO screen detection
 function screen_detection() {
     if [ $TERM == 'screen' ]; then
