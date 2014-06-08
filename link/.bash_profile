@@ -17,6 +17,12 @@ export HISTFILESIZE=5000
 
 export JAVA_HOME=$(/usr/libexec/java_home)
 
+# AWS credentials
+[ -f ~/.aws ] && . ~/.aws
+
+# Homebrew GH token
+[ -f ~/.homebrew ] && . ~/.homebrew
+
 alias guard="bundle exec guard"
 alias rake="bundle exec rake"
 alias chrome="open -a '/Applications/Google Chrome.app'"
