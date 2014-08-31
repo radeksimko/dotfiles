@@ -147,8 +147,12 @@ function ensure_xcode_cli_tools() {
 
   if [ "$OSX_VERS" -ge 9 ]; then
       touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
-      PROD=$(softwareupdate -l | grep -B 1 "Developer" | head -n 1 | awk -F"*" '{print $2}')
-      softwareupdate -i $PROD -v && e_success "XCode CLI Tools for OS X 10.9 installed"
+
+      [ "$OSX_VERS" -ge 10 ] && PROD=$(softwareupdate -l | grep "Command Line " | awk -F"*" '{print $2}' | sed -e 's/^ *//' | tr -d '\n')
+      [ "$OSX_VERS" -eq 9 ] && PROD=$(softwareupdate -l | grep -B 1 "Developer " | head -n 1 | awk -F"*" '{print $2}')
+
+      e_info "Installing $PROD ..."
+      softwareupdate -i "$PROD" -v && e_success "XCode CLI Tools for OS X 10.$OSX_VERS installed"
       return
   fi
 
