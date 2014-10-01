@@ -19,7 +19,7 @@ function ENSURE_BREW_IS_INSTALLED() {
   fi
 
   e_subheader "Installing Homebrew"
-  true | ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
+  true | ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
   e_arrow "Checking potential issues (brew doctor)"
   brew doctor
